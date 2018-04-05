@@ -24,7 +24,12 @@
 
    <script type='text/javascript'>
     function handler() {
-
+        var companyname = document.getElementById("companyname").value;
+        console.log("address...>>>" +companyname);
+        // var publickey = document.getElementById("publickey").value;
+        // console.log("address...>>>" +publickey);
+        // var privatekey = document.getElementById("privatekey").value;
+        // console.log("address...>>>" +privatekey);
      var fname = document.getElementById("fname").value;
         console.log("address...>>>" +fname);
         var lname =  document.getElementById("lname").value;
@@ -41,7 +46,9 @@
         console.log("Coinreciever:------>" + usertype);
         var register = {
 
-        
+        "companyname":companyname,
+        // "publickey" : publickey,
+        // "privatekey": privatekey,
         "fname" : fname, 
         "lname" : lname, 
         "userObject":userObject,
@@ -66,8 +73,8 @@
            
             
         });
-        alert("sucessfully registered!!!");
-        window.location = "login.html";
+        alert("Verify otp");
+        window.location = "otp.html";
         
     }
     </script>
@@ -75,7 +82,7 @@
     
 <body>
    
-         
+        <body  background="image/Webpage-Background.png">
        <!-- <div class="image">
         <img src="image/HomeLogo.jpg"style="width:100%;"> <br><br>
        </div> -->
@@ -87,20 +94,26 @@
             <div class="input-group">
                     <div class = "group">
                 <h3> <center> Organisation Details </center></h3>
-                <label>FirstName:</label> 
-                <!-- <input type="text" value=""  />&nbsp;  -->
-                <input type="text" style="width:150px" text-align: "left"; id="fname">
-                <label>LastName:</label>
-                <input type="text" style="width:150px" text-align: "left"; id="lname"> <br><br>
-                <label>ID:</label>&nbsp; 
-                <input type="text" style="width:150px" text-align: "left"; name="password"id="usertype"> <br> <br>
+                <label>CompanyName:</label>&nbsp; 
+                <input type="text" style="width:150px" text-align: "left"; name="password"id="companyname"> 
+                <label>CompanyID:</label>&nbsp; 
+                <input type="text" style="width:150px" text-align: "left"; name="password"id="usertype"> <br><br>
+                <!-- <label>Publickey:</label>&nbsp; 
+                <input type="text" style="width:150px" text-align: "left"; name="password"id="publickey">
+                <label>privatekey:</label>&nbsp; 
+                <input type="text" style="width:150px" text-align: "left"; name="password"id="privatekey"> <br> <br> -->
                
                 </div>
                 </div>
 
                 <div class="input-group">
                     <div class = "group">
-                <h3><center>Personal Details</center></h3>
+                <h3><center>Contact Information</center></h3>
+                <label>FirstName:</label> 
+                <!-- <input type="text" value=""  />&nbsp;  -->
+                <input type="text" style="width:150px" text-align: "left"; id="fname">
+                <label>LastName:</label>
+                <input type="text" style="width:150px" text-align: "left"; id="lname"> <br><br>
                 <label>Email:</label>&nbsp;
                 <input type="text" style="width:150px" text-align: "left"; name="UserName"id="email"> 
                 <label>phonenumber:</label>&nbsp;

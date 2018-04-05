@@ -191,24 +191,17 @@ window.App = {
     //                 });
     },
     
-    RegDetails:function(){
+    
+    
+    fetchDetails:function(){
         var self = this;
-        var fname = document.getElementById("fname").value;
-        console.log("address...>>>" +fname);
-        var lname =  document.getElementById("lname").value;
-        console.log("address...>>>" +lname);
-        var email_id = document.getElementById("email_id").value;
-        console.log("lol----",email_id)
-        var phno = document.getElementById("phno").value;
-        console.log("Coinreciever:------>" + phno);
-        var pass = document.getElementById("pass").value;
-        console.log("lol----",pass)
-        var repass =(document.getElementById("repass").value);
-        console.log("lol----",repass)
-        var usertype = (document.getElementById("usertype").value);
-        console.log("Coinreciever:------>" + usertype);
-        
-        var updateString=[fname,manAddrs,venAddrs,tot]
+        var url = document.getElementById("url").value;
+        console.log("address...>>>" +url);
+        var usertype =  document.getElementById("usertype").value;
+        console.log("address...>>>" +usertype);
+        var publickey = document.getElementById("publickey").value;
+        console.log("lol----",+publickey);
+        var updateString=[url,usertype,publickey]
         // updateString.toString();
         console.log("lol-------->",updateString);
         var rapid;

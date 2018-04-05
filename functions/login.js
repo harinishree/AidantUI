@@ -9,7 +9,6 @@ exports.loginUser = (email, password,usertype) =>
 
         console.log("Entering into login fun");
         console.log(email);
-
         user.find({
                 "email": email ,
             

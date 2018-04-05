@@ -13,13 +13,17 @@ const nodemailer = require('nodemailer');
 const User = require('./functions/getUser');
 const registerUser = require('./functions/registerUser');
 const login = require('./functions/login');
+const fetchkey = require('./functions/fetchkey');
+const filereader = require('./functions/filereader');
+const getStatus = require('./functions/getStatus');
+var fs =require('fs');
 
 
 
-// const nexmo = new Nexmo({
-//     apiKey: 'be214ba0',
-//     apiSecret: 'F0WCG2adz2udXrCB'
-// });
+const nexmo = new Nexmo({
+    apiKey: 'be214ba0',
+    apiSecret: 'F0WCG2adz2udXrCB'
+});
 
 
 
@@ -28,6 +32,8 @@ const login = require('./functions/login');
 router.post('/registerUser', cors(), (req, res) => { 
     console.log("UI",req.body);
 
+    const companyname = req.body.companyname;
+    console.log(companyname);
     const firstname = req.body.fname;
     console.log(firstname);
     const lastname = req.body.lname;
@@ -42,12 +48,16 @@ router.post('/registerUser', cors(), (req, res) => {
     console.log(usertype);
     const userObject = req.body.userObject;
     console.log( "phone",userObject);
-    // var phonetosend = userObject.phone;
-    // var otp = "";
-    // var possible = "0123456789";
-    // for (var i = 0; i < 4; i++)
-    //     otp += possible.charAt(Math.floor(Math.random() * possible.length));
-    // console.log("otp" + otp);
+    // const publickey = req.body.publickey;
+    // console.log( "phone",publickey);
+    // const privatekey = req.body.privatekey;
+    // console.log( "phone",privatekey);
+    var phonetosend = userObject.phone;
+    var otp = "";
+    var possible = "0123456789";
+    for (var i = 0; i < 4; i++)
+        otp += possible.charAt(Math.floor(Math.random() * possible.length));
+    console.log("otp" + otp);
      var encodedMail = new Buffer(req.body.email).toString('base64');
     
     if (!firstname || !lastname || !userObject || !email || !password || !retypepassword || !usertype) {
@@ -58,9 +68,10 @@ router.post('/registerUser', cors(), (req, res) => {
 
     } else {
 
-        registerUser.registerUser(firstname, lastname, userObject,email,password, retypepassword,usertype,encodedMail)
+        registerUser.registerUser(companyname,firstname, lastname, userObject,email,password, retypepassword,usertype,encodedMail)
             .then(result => {
-              
+                console.log("results harini", result);
+                // var link = "https://" + remoteHost + "/email/verify?mail=" + encodedMail + "&email=" + email;
                 var transporter = nodemailer.createTransport("SMTP", {
                     host: 'smtp.ipage.com',
                     port: 587,
@@ -75,19 +86,35 @@ router.post('/registerUser', cors(), (req, res) => {
                                         transport: transporter,
                                         from: 'rahul.desai@rapidqube.com',
                                         to: email,
-                                        subject: 'Document requirnment',
-                
-                                        html: "Chennai Super Kings"
+                                        subject: 'Register Invitation',
+                                         html:  "Registered Successfully "
+
                                     };
                                     transporter.sendMail(mailOptions, (error, info) => {
                                         if (error) {}
                                     });
+                                    // nexmo
+                                    // .message
+                                    // .sendSms('919842653746', phonetosend, otptosend, {
+                                    //     type: 'unicode'
+                                    // }, (err, responseData) => {
+                                    //     if (responseData) {
+                                    //         console.log(responseData)
+                                    //     }
+                                    // });
               
    
-                    res.status(result.status).json({
-                        message: result.message,
-                        ind: true
-                    })
+                    // res.status(result.status).json({
+                    //     message: result.message,
+                    //     ind: true
+                    // })
+                    res.send({
+                        "message": "user has been registered successfully",
+                        "status": true,
+
+
+                    });
+
                 })
     
                 .catch(err => res.status(err.status).json({
@@ -108,14 +135,18 @@ router.post('/login', cors(), (req, res) => {
    
     login
         .loginUser(emailid, passwordid)
-        .then(result => {   
+        .then(result => {  
+            console.log("resultharini",result); 
             console.log("result ===>>>",result.users.usertype)
+            
 
 
             res.send({
                 "message": "Login Successful",
                 "status": true,
                 "usertype":result.users.usertype,
+               "publicKey": result.users.publickey,
+                "PrivateKey":result.users.privatekey
             });
         })
         .catch(err => res.status(err.status).json({
@@ -125,6 +156,32 @@ router.post('/login', cors(), (req, res) => {
         }));
 
 }); 
+
+// router.post('/fetchkey', cors(), (req, res) => {
+
+//     console.log(req.body);
+//     var url = req.body.url;
+//     console.log("url",url);
+   
+//     var usertype = req.body.usertype;
+//     console.log(req.body.usertype);
+//     fetchkey
+//         .fetchkey(url,usertype)
+//         .then(function(result) {
+//             console.log(result)
+
+//             res.send({
+//                 status: result.status,
+//                 message: result.usr
+//             });
+//         })
+//         .catch(err => res.status(err.status).json({
+//             message: err.message
+//         }));
+
+
+// }); 
+
 
 router.get("/email/verify", cors(), (req, res, next) => {
     var status;
@@ -246,5 +303,170 @@ router.post("/user/phoneverification", cors(), (req, res) => {
         }));
 });
 
+
+router.post('/filereader', cors(), (req,res) => {
+    console.log("UI",req.body);
+    const URL = req.body.url;
+    console.log(URL);
+    var usertype = req.body.usertype;
+    console.log(usertype);
+    // const pubKey = req.body.pubKey;
+    // console.log(pubKey);
+    const Key = req.body.Key;
+    console.log(Key);
+        // perform operation e.g. GET request http.get() etc.
+       
+      
+        // cron.schedule('*/2 * * * *', function(){
+         
+          
+        fs.readdir(req.body.url, (err, files) => {
+            // sha256(req.body.URL);
+            // fs.stat(req.body.URL, (err, stats)=> { 
+            //     if(err){
+            //       //doing what I call "early return" pattern or basically "blacklisting"
+            //       //we stop errors at this block and prevent further execution of code
+              
+            //       //in here, do something like check what error was returned
+            //       switch(err.code){
+            //         case 'ENOENT':
+            //           console.log(req.body.URL + ' does not exist');
+            //           break;
+            //       }
+            //       //of course you should not proceed so you should return
+            //       return;
+            //     }
+              
+            //     //back there, we handled the error and blocked execution
+            //     //beyond this line, we assume there's no error and proceed
+              
+            //     if (stats.isDirectory()) {
+            //       console.log(req.body.URL + ": is a directory");
+            //     } else {
+            //       console.log(stats);
+            //     }
+            //   });
+          files.forEach(file => {
+              if(file)
+            console.log("data",file);
+            var file = file;
+      
+                     
+// var file = sha256.create();
+// file.update(req.body.URL);
+// file.hex();
+// console.log("encrypted",file)
+            
+        console.log(file)
+        if (!URL ||!Key || !file || !usertype ) {
+        res
+            .status(400)
+            .json({
+                message: 'Invalid Request !'
+            });
+        }
+            else {
+                filereader
+                    .filereader(URL,Key,file,usertype)
+                    .then(result => {
+        
+                        res.send({
+                            "message": "Transaction complete",
+                            "status": true,
+        
+                         
+        
+                        });
+        
+        
+                    })
+                    .catch(err => res.status(err.status).json({
+                        message: err.message
+                    }).json({
+                        status: err.status
+                       
+                    }));
+            }
+         });
+        
+      
+       })
+        
+     }); 
+    //  console.log('running a task every two minutes');
+    // });
+    router.post('/getAck', cors(), (req,res) => {
+       var Key = req.body.Key;
+       console.log(Key);
+        var ack = req.body.ack
+        console.log(ack);
+        if (!ack) {
+            res
+                .status(400)
+                .json({
+                    message: 'Invalid Request !'
+                });
+            }
+                else {
+    
+                    getAck
+                        .getAck(Key,ack)
+                        .then(function(result) {
+            
+                            res.send({
+                                "message": result.message,
+                                "status": true,
+            
+                             
+            
+                            });
+            
+            
+                        })
+                        .catch(err => res.status(err.status).json({
+                            message: err.message
+                        }).json({
+                            status: err.status
+                           
+                        }));
+                }
+             });
+    
+    
+    router.post('/getStatus', cors(), (req,res) => {
+        var self = this;
+        var key = req.body.Key;
+        console.log(key)
+        if (!key) {
+            res
+                .status(400)
+                .json({
+                    message: 'Invalid Request !'
+                });
+            }
+                else {
+    
+                    getStatus
+                        .getStatus(key)
+                        .then(function(result) {
+            
+                            res.send({
+                                "message": result.message,
+                                "status": true,
+            
+                             
+            
+                            });
+            
+            
+                        })
+                        .catch(err => res.status(err.status).json({
+                            message: err.message
+                        }).json({
+                            status: err.status
+                           
+                        }));
+                }
+             });
 
     }

@@ -61,14 +61,16 @@
 .tftable tr:hover {background-color:#ffffff;}
 .tables {display:inline-block;}
 th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;width:200px;}
-td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;width:200px;  color: white;}
+td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;width:200px;  color: black;}
   
 table{
   
       border: 1px solid lightblue;
     /* width:"100%"; */
-    margin: 0px auto;
-    margin-top: 100px;   
+    width: 800px;
+    margin: 0px ;
+    margin-top: 100px;
+    margin-left:-168px;  
 }
 th{
    border-right-width:medium;
@@ -219,7 +221,7 @@ input[type=file] {
    border: 1px solid black; */
    width: 500px;
    
-   height:250px;
+   height:400px;
    margin: 0 auto;
    border-width:1px;
    border-color:black;
@@ -257,5 +259,6 @@ input[type=file] {
     border-collapse: separate;
     margin-top: 50px;
     margin-left: 214px;
-    background-color: skyblue;
+    background-color: darkgray;
 }
+

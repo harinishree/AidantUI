@@ -183,7 +183,7 @@ input[type=password]:focus {
    height: 150px;
    border: 1px solid black; */
    width: 500px;
-   background: skyblue;
+   /* background: gray; */
    height:250px;
    margin: 0 auto;
    border-width:1px;
@@ -207,3 +207,4 @@ input[type=password]:focus {
     position: absolute;
     top: 50%;
 }
+.be-detail-header { border-bottom: 1px solid #edeff2; margin-bottom: 50px; }
