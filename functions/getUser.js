@@ -2,14 +2,16 @@
 
 const user = require('../models/registerether');
 
-exports.getUser = (email) => {
+exports.getUser = (email,phonenumber,otp) => {
 
     return new Promise((resolve, reject) => {
+        console.log("Entering in to the getuser function")
 
         user
-            .find({email:email}).then((users) => {
+            .find({email:email,phonenumber:phonenumber}).then((users) => {
 
-            console.log(users)
+            console.log("harini123...",users);
+            console.log("email123...>>>",email);
 
             resolve({status: 201, usr: users})
 

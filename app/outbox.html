@@ -87,16 +87,16 @@
     <script type='text/javascript'>
 
         function getkey() {
-     
-       
+      
+        
           var Key = "0x1718b72e3e38c93ff114d5462b951d298681d635"
           console.log("lol----" +Key)
          
           var fetch = {
-   
+    
         "Key":Key
       }
-       
+        
       $.ajax({
       url: 'http://localhost:8082/getStatus' ,
        type: 'POST',
@@ -111,11 +111,11 @@
         //    var privatekey = response.PrivateKey;
         //       console.log("privatekey",privatekey);
      
-       },
-                     
-            });    
+       }, 
+                      
+            });     
         }
-     
+      
         </script>
 
     <h3>
@@ -137,7 +137,7 @@
                     <input type="text" style="width:150px" text-align: "left" name="password"id="usertype"> <br> <br>
                    
                     <label>  publickey:</label>
-                    <input type="text" style="width:150px" text-align: "left" name="password"id="Key"> <br> <br> --> -->
+                    <input type="text" style="width:150px" text-align: "left" name="password"id="Key"> <br> <br> --> 
            <div class="wrapper">
              <button type="button" onclick="getkey()">Submit</button> <br> <br>
           <br>

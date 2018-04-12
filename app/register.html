@@ -26,16 +26,16 @@
     function handler() {
         var companyname = document.getElementById("companyname").value;
         console.log("address...>>>" +companyname);
-        // var publickey = document.getElementById("publickey").value;
-        // console.log("address...>>>" +publickey);
+        var publickey = document.getElementById("publickey").value;
+        console.log("address...>>>" +publickey);
         // var privatekey = document.getElementById("privatekey").value;
         // console.log("address...>>>" +privatekey);
      var fname = document.getElementById("fname").value;
         console.log("address...>>>" +fname);
         var lname =  document.getElementById("lname").value;
         console.log("address...>>>" +lname);
-        var userObject =(document.getElementById("userObject").value);
-        console.log("lolphone123----"+userObject)
+        var phonenumber =(document.getElementById("phonenumber").value);
+        console.log("lolphone123----"+phonenumber)
         var email = document.getElementById("email").value;
         console.log("lol----"+email)
         var pass = document.getElementById("pass").value;
@@ -44,19 +44,19 @@
         console.log("lol----"+repass)
         var usertype = document.getElementById("usertype").value;
         console.log("Coinreciever:------>" + usertype);
+     
         var register = {
 
         "companyname":companyname,
-        // "publickey" : publickey,
+        "publickey" : publickey,
         // "privatekey": privatekey,
         "fname" : fname, 
         "lname" : lname, 
-        "userObject":userObject,
+        "phonenumber":phonenumber,
         "email" : email,
         "pass" : pass, 
         "repass" : repass,
-        "usertype" : usertype
-        
+        "usertype" : usertype,
         }
         
      $.ajax({
@@ -97,11 +97,20 @@
                 <label>CompanyName:</label>&nbsp; 
                 <input type="text" style="width:150px" text-align: "left"; name="password"id="companyname"> 
                 <label>CompanyID:</label>&nbsp; 
-                <input type="text" style="width:150px" text-align: "left"; name="password"id="usertype"> <br><br>
-                <!-- <label>Publickey:</label>&nbsp; 
+                <select id="usertype">
+                        <option >Select Value</option>
+                    <option id="usertype">Honda</option>
+                    <option id="usertype">Account 1</option>
+                    <option id="usertype">Account 2</option>
+                    <option id="usertype">Account 3</option>
+                    <option id="usertype">Account 4</option>
+                    <option id="usertype">Account 5</option>
+                    </select> <br>
+                    
+                 <label>Publickey:</label>&nbsp; 
                 <input type="text" style="width:150px" text-align: "left"; name="password"id="publickey">
-                <label>privatekey:</label>&nbsp; 
-                <input type="text" style="width:150px" text-align: "left"; name="password"id="privatekey"> <br> <br> -->
+                <!-- <label>privatekey:</label>&nbsp; 
+                <input type="text" style="width:150px" text-align: "left"; name="password"id="privatekey"> <br> <br>  -->
                
                 </div>
                 </div>
@@ -116,8 +125,8 @@
                 <input type="text" style="width:150px" text-align: "left"; id="lname"> <br><br>
                 <label>Email:</label>&nbsp;
                 <input type="text" style="width:150px" text-align: "left"; name="UserName"id="email"> 
-                <label>phonenumber:</label>&nbsp;
-                <input type="text" style="width:150px" text-align: "left"; name="UserName"id="userObject"> <br> <br>
+                <label>Mobile Number:</label>&nbsp;
+                <input type="text" style="width:150px" text-align: "left"; name="UserName"id="phonenumber"> <br> <br>
                 <label>password:</label>&nbsp;
                 <input type="password" style="width:150px" text-align: "left"; name="password"id="pass"> 
                 <label>confirm password:</label>&nbsp;
@@ -158,7 +167,7 @@
         <!-- <a href="dashboard1.html"><button>Submit</button></a> 
        <button class="button" id="send" onclick="App.myFunction()">Submit</button>
                                        <br> -->
-                          <button type="button" onclick="handler()">Submit</button>
+                          <button type="button" onclick="handler('usertype')">Submit</button>
     </div>
    </div>
    </body>

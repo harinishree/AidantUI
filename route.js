@@ -16,18 +16,19 @@ const login = require('./functions/login');
 const fetchkey = require('./functions/fetchkey');
 const filereader = require('./functions/filereader');
 const getStatus = require('./functions/getStatus');
+const newLogin = require('./functions/newLogin');
 var fs =require('fs');
-
-
-
-const nexmo = new Nexmo({
-    apiKey: 'be214ba0',
-    apiSecret: 'F0WCG2adz2udXrCB'
-});
-
-
+const SendOtp = require('sendotp');
+const sendOtp = new SendOtp('209235Abkzi8ZW2sr5acc5d6f');
 
  module.exports = router => {
+    router.post('/demo', cors(), (req, res) => { 
+    sendOtp.send('919842653746', "RDYPOL", '1234', function (error, data, response) {
+           console.log(data);
+          // console.log("response",response)
+        //    console.log(otp,"otp")
+         });
+        })
 
 router.post('/registerUser', cors(), (req, res) => { 
     console.log("UI",req.body);
@@ -45,14 +46,13 @@ router.post('/registerUser', cors(), (req, res) => {
     const retypepassword = req.body.repass;
     console.log(retypepassword);
     const usertype = req.body.usertype;
-    console.log(usertype);
-    const userObject = req.body.userObject;
-    console.log( "phone",userObject);
-    // const publickey = req.body.publickey;
-    // console.log( "phone",publickey);
+    console.log("harini123..<<<",usertype);
+    const phonenumber = req.body.phonenumber;
+    console.log( "phone",phonenumber);
+    const publickey = req.body.publickey;
+    console.log( "publickey",publickey);
     // const privatekey = req.body.privatekey;
     // console.log( "phone",privatekey);
-    var phonetosend = userObject.phone;
     var otp = "";
     var possible = "0123456789";
     for (var i = 0; i < 4; i++)
@@ -60,7 +60,7 @@ router.post('/registerUser', cors(), (req, res) => {
     console.log("otp" + otp);
      var encodedMail = new Buffer(req.body.email).toString('base64');
     
-    if (!firstname || !lastname || !userObject || !email || !password || !retypepassword || !usertype) {
+    if (!firstname || !lastname || !phonenumber || !email || !password || !retypepassword || !usertype) {
         res.status(400)
             .json({
                 message: 'Invalid Request !'
@@ -68,62 +68,116 @@ router.post('/registerUser', cors(), (req, res) => {
 
     } else {
 
-        registerUser.registerUser(companyname,firstname, lastname, userObject,email,password, retypepassword,usertype,encodedMail)
+        registerUser.registerUser(companyname,firstname, lastname, phonenumber,email,password, retypepassword,usertype,encodedMail,publickey,otp)
             .then(result => {
                 console.log("results harini", result);
                 // var link = "https://" + remoteHost + "/email/verify?mail=" + encodedMail + "&email=" + email;
+                console.log("encoded mail",encodedMail)
                 var transporter = nodemailer.createTransport("SMTP", {
                     host: 'smtp.ipage.com',
                     port: 587,
                     secure: true,
                     auth: {
-                        user: "rahul.desai@rapidqube.com",
-                        pass: "Rpqb@12345"
+                        user: "harinishree.muniraj@rapidqube.com",
+                        pass: "Harini!96"
                     }
                 });
                                    
                                     var mailOptions = {
                                         transport: transporter,
-                                        from: 'rahul.desai@rapidqube.com',
-                                        to: email,
-                                        subject: 'Register Invitation',
-                                         html:  "Registered Successfully "
+                                        from: 'harinishree.muniraj@rapidqube.com',
+                                        to:     email,
+                                        subject: 'OTP Confirmation',
+                                         html:  "Hello,<br> Your Otp is.<br> " + otp
 
                                     };
                                     transporter.sendMail(mailOptions, (error, info) => {
-                                        if (error) {}
+                                        console.log("mail",mailOptions)
+                                        if (error){}        
                                     });
-                                    // nexmo
-                                    // .message
-                                    // .sendSms('919842653746', phonetosend, otptosend, {
-                                    //     type: 'unicode'
-                                    // }, (err, responseData) => {
-                                    //     if (responseData) {
-                                    //         console.log(responseData)
-                                    //     }
-                                    // });
-              
-   
-                    // res.status(result.status).json({
-                    //     message: result.message,
-                    //     ind: true
-                    // })
-                    res.send({
-                        "message": "user has been registered successfully",
-                        "status": true,
-
-
-                    });
-
+                                    sendOtp.send(phonenumber, "RDYPOL", otp, function (error, data, response) {
+                                        console.log(data);
+                                       // console.log("response",response)
+                                        console.log(otp,"otp")
+                                    
+                                     });
+                                    var otptosend = 'your otp is ' + otp;
+                                    console.log(otptosend ,"otp")
+                                    if (!phonenumber) {
+                                        res
+                                            .status(400)
+                                            .json({
+                                                message: 'Invalid Request !'
+                                            });
+                             
+                                    } else {
+                                        console.log("entering in to the else part");
+                                        User
+                                        .getUser(email,phonenumber,otp)
+                                        .then(result => {
+                                                res
+                                                    .status(result.status)
+                                                    .json({
+                                                        message: result.message,
+                                                        phonenumber: phonenumber
+                                                    });
+                             
+                                            })
+                                            .catch(err => res.status(err.status).json({
+                                                message: err.message
+                                            }).json({
+                                                status: err.status
+                                           }));
+                                        
+                                 }
                 })
     
-                .catch(err => res.status(err.status).json({
-                    message: err.message
-                }).json({
-                    status: err.status
-                }));
+                
             }
         });
+
+        router.post('/otp', cors(), (req, res) => {
+
+            console.log("UI123......",req.body)
+
+            const otp = req.body.otp;
+    
+       
+    
+            if (!otp) {
+    
+                res
+                    .status(400)
+                    .json({
+                        message: 'Invalid Request !'
+                    });
+    
+            } else {
+                
+                   
+                       
+                            //var status = result.usr[0]._doc.status
+                            
+                            newLogin 
+                                    .newLogin (otp)
+                                
+                                        .then(result => {
+                                            console.log("harini123...>>>",result);
+    
+                                        res
+                                            .status(result.status)
+                                            .json({
+                                                message: result.message,
+                                                
+                                            });
+    
+                                    })
+                                    .catch(err => res.status(err.status).json({
+                                        message: err.message
+                                    }));          
+            }
+        });
+    
 
 router.post('/login', cors(), (req, res) => {
     console.log("entering login function in functions ");
@@ -138,8 +192,6 @@ router.post('/login', cors(), (req, res) => {
         .then(result => {  
             console.log("resultharini",result); 
             console.log("result ===>>>",result.users.usertype)
-            
-
 
             res.send({
                 "message": "Login Successful",
@@ -155,7 +207,9 @@ router.post('/login', cors(), (req, res) => {
             status: err.status
         }));
 
-}); 
+});
+
+
 
 // router.post('/fetchkey', cors(), (req, res) => {
 
@@ -368,13 +422,15 @@ router.post('/filereader', cors(), (req,res) => {
             else {
                 filereader
                     .filereader(URL,Key,file,usertype)
+
                     .then(result => {
+                        // var config = require('config');
+                        // var dbConfig = config.get('pro');
+                        // console.log("properties",dbConfig );
         
                         res.send({
                             "message": "Transaction complete",
-                            "status": true,
-        
-                         
+                            "status": true,  
         
                         });
         
@@ -435,7 +491,7 @@ router.post('/filereader', cors(), (req,res) => {
     
     router.post('/getStatus', cors(), (req,res) => {
         var self = this;
-        var key = req.body.Key;
+        var key = "0x0608ede3c89cf024f3379c0478666090f97d7517";
         console.log(key)
         if (!key) {
             res
@@ -470,3 +526,6 @@ router.post('/filereader', cors(), (req,res) => {
              });
 
     }
+    var config = require('config');
+    var dbConfig = config.get('pro');
+    console.log("properties",dbConfig );

@@ -101,12 +101,12 @@ var account;
 
            
        
-        }).then((value)=> ({
+        }) .then((value) => resolve({
             status: 201,
-            message: value
-         
-   
+           message: value
+        
       }))
+   
 
         .catch(err => {
             if (err.code == 11000) {

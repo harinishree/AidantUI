@@ -3,7 +3,7 @@
 const user = require('../models/registerether');
 // const user = require('../models/fetchdata');
 
-exports.loginUser = (email, password,usertype) =>
+exports.loginUser = (email,password,usertype) =>
 
     new Promise((resolve, reject) => {
 

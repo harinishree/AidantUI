@@ -2,12 +2,12 @@
 
 const user = require('../models/registerether');
 
-exports.getnewotp = (email,otp) => {
+exports.getotp = (phonetosend,otp) => {
 
     return new Promise((resolve, reject) => {
 
         user.findOneAndUpdate({
-            email: email
+            phonetosend:phonetosend
         }, {
             $set: {
                 otp: otp,
