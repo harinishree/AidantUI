@@ -4,6 +4,8 @@ var Promises = require('promise');
 var cloudinary = require('cloudinary').v2;
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
+// var mailer = require('express-mailer');
+ 
 var path = require('path');
 const Nexmo = require('nexmo');
 const verifyemail = require('./functions/emailverification');
@@ -17,6 +19,7 @@ const fetchkey = require('./functions/fetchkey');
 const filereader = require('./functions/filereader');
 const getStatus = require('./functions/getStatus');
 const newLogin = require('./functions/newLogin');
+const mail = require('./functions/mail');
 var fs =require('fs');
 const SendOtp = require('sendotp');
 const sendOtp = new SendOtp('209235Abkzi8ZW2sr5acc5d6f');
@@ -30,112 +33,125 @@ const sendOtp = new SendOtp('209235Abkzi8ZW2sr5acc5d6f');
          });
         })
 
-router.post('/registerUser', cors(), (req, res) => { 
-    console.log("UI",req.body);
-
-    const companyname = req.body.companyname;
-    console.log(companyname);
-    const firstname = req.body.fname;
-    console.log(firstname);
-    const lastname = req.body.lname;
-    console.log(lastname);
-    const email = req.body.email;
-    console.log(email); 
-    const password = req.body.pass;
-    console.log(password);
-    const retypepassword = req.body.repass;
-    console.log(retypepassword);
-    const usertype = req.body.usertype;
-    console.log("harini123..<<<",usertype);
-    const phonenumber = req.body.phonenumber;
-    console.log( "phone",phonenumber);
-    const publickey = req.body.publickey;
-    console.log( "publickey",publickey);
-    // const privatekey = req.body.privatekey;
-    // console.log( "phone",privatekey);
-    var otp = "";
-    var possible = "0123456789";
-    for (var i = 0; i < 4; i++)
-        otp += possible.charAt(Math.floor(Math.random() * possible.length));
-    console.log("otp" + otp);
-     var encodedMail = new Buffer(req.body.email).toString('base64');
-    
-    if (!firstname || !lastname || !phonenumber || !email || !password || !retypepassword || !usertype) {
-        res.status(400)
-            .json({
-                message: 'Invalid Request !'
-            });
-
-    } else {
-
-        registerUser.registerUser(companyname,firstname, lastname, phonenumber,email,password, retypepassword,usertype,encodedMail,publickey,otp)
-            .then(result => {
-                console.log("results harini", result);
-                // var link = "https://" + remoteHost + "/email/verify?mail=" + encodedMail + "&email=" + email;
-                console.log("encoded mail",encodedMail)
-                var transporter = nodemailer.createTransport("SMTP", {
-                    host: 'smtp.ipage.com',
-                    port: 587,
-                    secure: true,
-                    auth: {
-                        user: "harinishree.muniraj@rapidqube.com",
-                        pass: "Harini!96"
+        router.post('/registerUser', cors(), (req, res) => { 
+            console.log("UI",req.body);
+        
+            const companyname = req.body.companyname;
+            console.log(companyname);
+            const firstname = req.body.fname;
+            console.log(firstname);
+            const lastname = req.body.lname;
+            console.log(lastname);
+            const email = req.body.email;
+            console.log(email); 
+            const password = req.body.pass;
+            console.log(password);
+            const retypepassword = req.body.repass;
+            console.log(retypepassword);
+            const usertype = req.body.usertype;
+            console.log("harini123..<<<",usertype);
+            const phonenumber = req.body.phonenumber;
+            console.log( "phone",phonenumber);
+            const publickey = req.body.publickey;
+            console.log( "publickey",publickey);
+            // const privatekey = req.body.privatekey;
+            // console.log( "phone",privatekey);
+            var otp = "";
+            var possible = "0123456789";
+            for (var i = 0; i < 4; i++)
+                otp += possible.charAt(Math.floor(Math.random() * possible.length));
+            console.log("otp" + otp);
+             var encodedMail = new Buffer(req.body.email).toString('base64');
+            
+            if (!firstname || !lastname || !phonenumber || !email || !password || !retypepassword || !usertype) {
+                res.status(400)
+                    .json({
+                        message: 'Invalid Request !'
+                    });
+        
+            } else {
+        
+                registerUser.registerUser(companyname,firstname, lastname, phonenumber,email,password, retypepassword,usertype,encodedMail,publickey,otp)
+                    .then(result => {
+                        console.log("results harini", result);
+                        // var link = "https://" + remoteHost + "/email/verify?mail=" + encodedMail + "&email=" + email;
+                        console.log("encoded mail",encodedMail)
+                        var transporter = nodemailer.createTransport("SMTP", {
+                            host: 'smtp.ipage.com',
+                            port: 587,
+                            ignoreTLS:true,
+                            secure: false,
+                            auth: {
+                                user: "harinishree.muniraj@rapidqube.com",
+                                pass: "Harini!96"
+                            },
+                            tls: {
+                                rejectUnauthorized : false
+                            }
+                        });
+                                           
+                                            var mailOptions = {
+                                                transport: transporter,
+                                                from: 'harinishree.muniraj@rapidqube.com',
+                                                to:     email,
+                                                subject: 'OTP Confirmation',
+                                                 html:  "Hello,<br> Your Otp is.<br> " + otp
+        
+                                            };
+                                            transporter.sendMail(mailOptions, (error, info) => {
+                                                
+                                                
+                                                    if(error){
+                                                        return console.log('greska:' + error)
+                                                        return next(error);
+                                                    } else {
+                                                     console.log('Message sent: ' + info.response);
+                                                     res.json(info.response);
+                                                    }
+                                                       
+                                            });
+                                            sendOtp.send(phonenumber, "AIDANT", otp, function (error, data, response) {
+                                                console.log(data);
+                                               // console.log("response",response)
+                                                console.log(otp,"otp")
+                                            
+                                             });
+                                            var otptosend = 'your otp is ' + otp;
+                                            console.log(otptosend ,"otp")
+                                            if (!phonenumber) {
+                                                res
+                                                    .status(400)
+                                                    .json({
+                                                        message: 'Invalid Request !'
+                                                    });
+                                     
+                                            } else {
+                                                console.log("entering in to the else part");
+                                                User
+                                                .getUser(email,phonenumber,otp)
+                                                .then(result => {
+                                                        res
+                                                            .status(result.status)
+                                                            .json({
+                                                                message: result.message,
+                                                                phonenumber: phonenumber
+                                                            });
+                                     
+                                                    })
+                                                    .catch(err => res.status(err.status).json({
+                                                        message: err.message
+                                                    }).json({
+                                                        status: err.status
+                                                   }));
+                                                
+                                         }
+                        })
+            
+                        
                     }
                 });
-                                   
-                                    var mailOptions = {
-                                        transport: transporter,
-                                        from: 'harinishree.muniraj@rapidqube.com',
-                                        to:     email,
-                                        subject: 'OTP Confirmation',
-                                         html:  "Hello,<br> Your Otp is.<br> " + otp
-
-                                    };
-                                    transporter.sendMail(mailOptions, (error, info) => {
-                                        console.log("mail",mailOptions)
-                                        if (error){}        
-                                    });
-                                    sendOtp.send(phonenumber, "RDYPOL", otp, function (error, data, response) {
-                                        console.log(data);
-                                       // console.log("response",response)
-                                        console.log(otp,"otp")
-                                    
-                                     });
-                                    var otptosend = 'your otp is ' + otp;
-                                    console.log(otptosend ,"otp")
-                                    if (!phonenumber) {
-                                        res
-                                            .status(400)
-                                            .json({
-                                                message: 'Invalid Request !'
-                                            });
-                             
-                                    } else {
-                                        console.log("entering in to the else part");
-                                        User
-                                        .getUser(email,phonenumber,otp)
-                                        .then(result => {
-                                                res
-                                                    .status(result.status)
-                                                    .json({
-                                                        message: result.message,
-                                                        phonenumber: phonenumber
-                                                    });
-                             
-                                            })
-                                            .catch(err => res.status(err.status).json({
-                                                message: err.message
-                                            }).json({
-                                                status: err.status
-                                           }));
-                                        
-                                 }
-                })
-    
-                
-            }
-        });
-
+        
+        
         router.post('/otp', cors(), (req, res) => {
 
             console.log("UI123......",req.body)
@@ -178,6 +194,71 @@ router.post('/registerUser', cors(), (req, res) => {
             }
         });
     
+
+        router.post('/mail', cors(), (req, res) => {
+
+                        const email = req.body.email;
+                        console.log("email",email);
+                          const otp = req.body.otp;
+                          console.log("otp",otp);
+
+                           mail.mail(email,otp)
+                    .then(users=> {
+
+                            // var transporter = nodemailer.createTransport("SMTP", {
+                            //     host: 'smtp.ipage.com',
+                            //     port: 587,
+                            //     ignoreTLS:true,
+                            //     secure: false,
+                            //     auth: {
+                            //         user: "harinishree.muniraj@rapidqube.com",
+                            //         pass: "Harini!96"
+                            //     }
+                            // });
+                                               
+                            //                     var mailOptions = {
+                            //                         transport: transporter,
+                            //                         from: 'harinishree.muniraj@rapidqube.com',
+                            //                         to:     'm.harishree@gmail.com',
+                            //                         subject: 'OTP Confirmation',
+                            //                          html:  "Hello,<br> Your Otp is.<br> "
+            
+                            //                     };
+                            //                     transporter.sendMail(mailOptions, (error, info) => {
+                            //                         console.log("mail",mailOptions)
+                            //                         if (error){
+                            //                             console.log("error",error);
+                            //                         }        
+                            //                     });
+                           
+                            sendmail({
+                                
+                                from: 'harinishree.muniraj@rapidqube.com',
+                                to: email,
+                                subject: 'test sendmail',
+                                html: 'Mail of test sendmail ',
+                              }, function(err, reply) {
+                                console.log(err && err.stack);
+                                console.dir(reply);
+                            });
+                            console.log("Entering in to the send mailer function");
+                                                res
+                                            .status(result.status)
+                                            .json({
+                                                message: result.message,
+                                                
+                                            });
+    
+                                    })
+                                    .catch(err => res.status(err.status).json({
+                                        message: err.message
+                                    }));          
+                                            
+                            
+        });
+        
+    
+
 
 router.post('/login', cors(), (req, res) => {
     console.log("entering login function in functions ");
@@ -358,97 +439,97 @@ router.post("/user/phoneverification", cors(), (req, res) => {
 });
 
 
-router.post('/filereader', cors(), (req,res) => {
-    console.log("UI",req.body);
-    const URL = req.body.url;
-    console.log(URL);
-    var usertype = req.body.usertype;
-    console.log(usertype);
-    // const pubKey = req.body.pubKey;
-    // console.log(pubKey);
-    const Key = req.body.Key;
-    console.log(Key);
-        // perform operation e.g. GET request http.get() etc.
+// router.post('/filereader', cors(), (req,res) => {
+//     console.log("UI",req.body);
+//     const URL = req.body.url;
+//     console.log(URL);
+//     var usertype = req.body.usertype;
+//     console.log(usertype);
+//     // const pubKey = req.body.pubKey;
+//     // console.log(pubKey);
+//     const Key = req.body.Key;
+//     console.log(Key);
+//         // perform operation e.g. GET request http.get() etc.
        
       
-        // cron.schedule('*/2 * * * *', function(){
+//         // cron.schedule('*/2 * * * *', function(){
          
           
-        fs.readdir(req.body.url, (err, files) => {
-            // sha256(req.body.URL);
-            // fs.stat(req.body.URL, (err, stats)=> { 
-            //     if(err){
-            //       //doing what I call "early return" pattern or basically "blacklisting"
-            //       //we stop errors at this block and prevent further execution of code
+//         fs.readdir(req.body.url, (err, files) => {
+//             // sha256(req.body.URL);
+//             // fs.stat(req.body.URL, (err, stats)=> { 
+//             //     if(err){
+//             //       //doing what I call "early return" pattern or basically "blacklisting"
+//             //       //we stop errors at this block and prevent further execution of code
               
-            //       //in here, do something like check what error was returned
-            //       switch(err.code){
-            //         case 'ENOENT':
-            //           console.log(req.body.URL + ' does not exist');
-            //           break;
-            //       }
-            //       //of course you should not proceed so you should return
-            //       return;
-            //     }
+//             //       //in here, do something like check what error was returned
+//             //       switch(err.code){
+//             //         case 'ENOENT':
+//             //           console.log(req.body.URL + ' does not exist');
+//             //           break;
+//             //       }
+//             //       //of course you should not proceed so you should return
+//             //       return;
+//             //     }
               
-            //     //back there, we handled the error and blocked execution
-            //     //beyond this line, we assume there's no error and proceed
+//             //     //back there, we handled the error and blocked execution
+//             //     //beyond this line, we assume there's no error and proceed
               
-            //     if (stats.isDirectory()) {
-            //       console.log(req.body.URL + ": is a directory");
-            //     } else {
-            //       console.log(stats);
-            //     }
-            //   });
-          files.forEach(file => {
-              if(file)
-            console.log("data",file);
-            var file = file;
+//             //     if (stats.isDirectory()) {
+//             //       console.log(req.body.URL + ": is a directory");
+//             //     } else {
+//             //       console.log(stats);
+//             //     }
+//             //   });
+//           files.forEach(file => {
+//               if(file)
+//             console.log("data",file);
+//             var file = file;
       
                      
-// var file = sha256.create();
-// file.update(req.body.URL);
-// file.hex();
-// console.log("encrypted",file)
+// // var file = sha256.create();
+// // file.update(req.body.URL);
+// // file.hex();
+// // console.log("encrypted",file)
             
-        console.log(file)
-        if (!URL ||!Key || !file || !usertype ) {
-        res
-            .status(400)
-            .json({
-                message: 'Invalid Request !'
-            });
-        }
-            else {
-                filereader
-                    .filereader(URL,Key,file,usertype)
+//         console.log(file)
+//         if (!URL ||!Key || !file || !usertype ) {
+//         res
+//             .status(400)
+//             .json({
+//                 message: 'Invalid Request !'
+//             });
+//         }
+//             else {
+//                 filereader
+//                     .filereader(URL,Key,file,usertype)
 
-                    .then(result => {
-                        // var config = require('config');
-                        // var dbConfig = config.get('pro');
-                        // console.log("properties",dbConfig );
+//                     .then(result => {
+//                         // var config = require('config');
+//                         // var dbConfig = config.get('pro');
+//                         // console.log("properties",dbConfig );
         
-                        res.send({
-                            "message": "Transaction complete",
-                            "status": true,  
+//                         res.send({
+//                             "message": "Transaction complete",
+//                             "status": true,  
         
-                        });
+//                         });
         
         
-                    })
-                    .catch(err => res.status(err.status).json({
-                        message: err.message
-                    }).json({
-                        status: err.status
+//                     })
+//                     .catch(err => res.status(err.status).json({
+//                         message: err.message
+//                     }).json({
+//                         status: err.status
                        
-                    }));
-            }
-         });
+//                     }));
+//             }
+//          });
         
       
-       })
+//        })
         
-     }); 
+//      }); 
     //  console.log('running a task every two minutes');
     // });
     router.post('/getAck', cors(), (req,res) => {
@@ -471,9 +552,7 @@ router.post('/filereader', cors(), (req,res) => {
             
                             res.send({
                                 "message": result.message,
-                                "status": true,
-            
-                             
+                                "status": true, 
             
                             });
             
@@ -524,8 +603,55 @@ router.post('/filereader', cors(), (req,res) => {
                         }));
                 }
              });
+             router.post('/filereader', cors(), (req,res) => {
+               
+        const URL = req.body.url;
+        console.log(URL);
+        var usertype = req.body.usertype;
+        console.log(usertype);
+        const Key = req.body.Key;
+        console.log(Key);
+        var demo = 
+        {
+            URL: URL,
+            usertype: usertype,
+            Key: Key
+        }
+            
 
+
+        //  obj.jsonFileData.push({id: 1, square:2});
+
+        //  var json = JSON.stringify(obj);
+
+         var fs = require('fs');
+        //  fs.writeFile('myjsonfile.json', json, (err) => {  
+        //     if (err) throw err;
+        //     console.log('Data written to file');
+        // });
+        
+         fs.readFile('config.json', 'utf8', function readFileCallback(err, data){
+            if (err){
+                console.log(err);
+            } else {
+                console.log("data123",data);
+                var obj;
+                var json;
+            obj = JSON.parse(data); //now it an object
+            obj.jsonFileData.push(demo); //add some data
+            json = JSON.stringify(obj); //convert it back to json
+            fs.writeFile('config.json', json, 'utf8',  (err) => {  
+                    if (err) throw err;
+                    console.log('Data written to file');
+                    res.status(200).json({
+                        message:"upload done"
+                    });
+                }); // write it back 
+        }});
+
+    })
     }
     var config = require('config');
     var dbConfig = config.get('pro');
     console.log("properties",dbConfig );
+

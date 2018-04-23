@@ -1,0 +1,109 @@
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!--<meta charset="utf-8" />-->
+    <link rel="icon" type="image/png" href="assets/img/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <script src="../app.js"></script>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet" />
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css" rel="stylesheet" />
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="assets/css/demo.css" rel="stylesheet" />
+    <!--     Fonts and icons     -->
+    <script src="https://unpkg.com/ag-grid@14.2.0/dist/ag-grid.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <!-- <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  -->
+</head>
+<body>
+<form id="test" action="#" method="post">
+    <div class="form-group">
+        <label for="path">path</label>
+        <input class="form-control" type="text" name="path" id="path" />
+   
+  
+    
+    	<label for="select">company Name</label>
+    	<select name="select" class="form-control">
+            <option value="none" selected="selected">None</option>
+            <option value="Honda">Honda </option>
+    		<option value="Account1">Account1 </option>
+    		<option value="Account2">Account2</option>
+    		<option value="Account3">Account 3</option>
+    	</select>
+
+        <label for="PublicKey">Public Key</label>
+        <input class="form-control" type="text" name="PublicKey" id="PublicKey" />
+    
+   </div>
+    <p>
+        <input type="submit" value="Send" class="btn btn-primary btn-block" />
+    </p>
+</form>	
+<pre id="output"></pre>
+</body>
+
+
+<script>
+    (function() {
+	function toJSONString( form ) {
+        console.log("form",form)
+		var obj = {};
+		var elements = form.querySelectorAll( "input, select, textarea" );
+		for( var i = 0; i < elements.length; ++i ) {
+			var element = elements[i];
+            console.log("harinielement", element)
+			var name = element.name;
+            console.log("harininame",name)
+			var value = element.value;
+            console.log("harinivalue",value)
+			if( name ) {
+				obj[ name ] = value;
+                console.log("obj",obj)
+			}
+		}
+
+		return JSON.stringify( obj );
+	}
+
+	document.addEventListener( "DOMContentLoaded", function() {
+		var form = document.getElementById( "test" );
+        console.log("form123..>>",form)
+		var output = document.getElementById( "output" );
+		form.addEventListener( "submit", function( e ) {
+			e.preventDefault();
+			var json = toJSONString( this );
+            console.log("json",json);
+            output.innerHTML = json;
+            console.log("output",output.innerHTML)
+
+		}, false);
+
+	});
+
+})();
+</script>
+<style>
+    body {
+        margin: 2em auto;
+        max-width: 600px;
+      }
+      
+      form div {
+          margin-bottom: 0.5em;
+      }
+      form div label, form div input {
+          display: block;
+          margin-bottom: 0.3em;
+      }
+    </style>
