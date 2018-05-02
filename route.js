@@ -289,9 +289,11 @@ router.post('/outbox', cors(), (req, res) => {
     console.log(publickey);
     const status = req.body.status;
     console.log(status);
+    const venpublickey = req.body.vendorkey;
+    console.log(venpublickey);
    
     outbox
-        .outboxUser(url,usertype,publickey,status)
+        .outboxUser(url,usertype,publickey,venpublickey,status)
         .then(result => {  
             console.log("resultharini",result); 
            

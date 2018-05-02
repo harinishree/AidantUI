@@ -76,11 +76,13 @@
                     <li><a href="outbox.html">Outbox</a></li>
                     <li><a href="deliverystatus.html">Delivery Status</a></li>
                     
+                    
                 </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
               <li><a href="register.html">Register</a></li>
+              <li><a href="login.html">Logout</a></li>
           </ul>
     </div>
 </nav>
@@ -135,6 +137,7 @@
               "url":url,
               "usertype":usertype,
               "publickey":publickey,
+              "vendorkey":vendorkey,
               "status": status
 
       }
@@ -178,6 +181,9 @@
      <br>
         
             <form>
+
+                    <label>  ManufacturerKey:</label>
+                    <input type="text" style="width:150px" text-align: "left" name="password"id="publickey"> <br> <br>  
                      <label for="Name">URL:</label>
                     <input type="text" style="width:150px" text-align: "left"; name="UserName"id="url"> <br> <br>
                     <!-- <div class="wrapper">
@@ -194,8 +200,8 @@
                          <option id="usertype">Account 5</option>
                          </select> <br> <br>
                    
-                    <label>  publickey:</label>
-                    <input type="text" style="width:150px" text-align: "left" name="password"id="publickey"> <br> <br>                     
+                    <label>  VendorKey:</label>
+                    <input type="text" style="width:150px" text-align: "left" name="password"id="vendorkey"> <br> <br>                  
             <div class="wrapper">
              <button type="button" onclick="outbox()">Submit</button> <br> <br>
           <br>  
