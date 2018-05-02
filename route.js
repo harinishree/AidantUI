@@ -19,10 +19,18 @@ const fetchkey = require('./functions/fetchkey');
 const filereader = require('./functions/filereader');
 const getStatus = require('./functions/getStatus');
 const newLogin = require('./functions/newLogin');
+const outbox = require('./functions/outbox');
 const mail = require('./functions/mail');
 var fs =require('fs');
 const SendOtp = require('sendotp');
 const sendOtp = new SendOtp('209235Abkzi8ZW2sr5acc5d6f');
+const nodecipher = require('node-cipher');
+var ipfsAPI = require('ipfs-api');
+var output;
+var ipfs = ipfsAPI('localhost', 5001)
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
 
  module.exports = router => {
     router.post('/demo', cors(), (req, res) => { 
@@ -77,39 +85,26 @@ const sendOtp = new SendOtp('209235Abkzi8ZW2sr5acc5d6f');
                         // var link = "https://" + remoteHost + "/email/verify?mail=" + encodedMail + "&email=" + email;
                         console.log("encoded mail",encodedMail)
                         var transporter = nodemailer.createTransport("SMTP", {
-                            host: 'smtp.ipage.com',
-                            port: 587,
-                            ignoreTLS:true,
-                            secure: false,
+                            host: 'smtp.office365.com',
+                            port: 25,
+                            secure: true,
                             auth: {
                                 user: "harinishree.muniraj@rapidqube.com",
                                 pass: "Harini!96"
-                            },
-                            tls: {
-                                rejectUnauthorized : false
                             }
                         });
-                                           
-                                            var mailOptions = {
-                                                transport: transporter,
-                                                from: 'harinishree.muniraj@rapidqube.com',
-                                                to:     email,
-                                                subject: 'OTP Confirmation',
-                                                 html:  "Hello,<br> Your Otp is.<br> " + otp
-        
-                                            };
-                                            transporter.sendMail(mailOptions, (error, info) => {
-                                                
-                                                
-                                                    if(error){
-                                                        return console.log('greska:' + error)
-                                                        return next(error);
-                                                    } else {
-                                                     console.log('Message sent: ' + info.response);
-                                                     res.json(info.response);
-                                                    }
-                                                       
-                                            });
+            
+                        var mailOptions = {
+                            transport: transporter,
+                            from: '"AIDANT"<harinishree.muniraj@rapidqube.com',
+                            to: email,
+                            subject: 'OTP Confirmation',
+            
+                            html: "Hello,<br> Your Otp is.<br> " + otp
+                        };
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {}
+                        });
                                             sendOtp.send(phonenumber, "AIDANT", otp, function (error, data, response) {
                                                 console.log(data);
                                                // console.log("response",response)
@@ -197,67 +192,60 @@ const sendOtp = new SendOtp('209235Abkzi8ZW2sr5acc5d6f');
 
         router.post('/mail', cors(), (req, res) => {
 
-                        const email = req.body.email;
-                        console.log("email",email);
-                          const otp = req.body.otp;
-                          console.log("otp",otp);
-
-                           mail.mail(email,otp)
-                    .then(users=> {
-
-                            // var transporter = nodemailer.createTransport("SMTP", {
-                            //     host: 'smtp.ipage.com',
-                            //     port: 587,
-                            //     ignoreTLS:true,
-                            //     secure: false,
-                            //     auth: {
-                            //         user: "harinishree.muniraj@rapidqube.com",
-                            //         pass: "Harini!96"
-                            //     }
-                            // });
-                                               
-                            //                     var mailOptions = {
-                            //                         transport: transporter,
-                            //                         from: 'harinishree.muniraj@rapidqube.com',
-                            //                         to:     'm.harishree@gmail.com',
-                            //                         subject: 'OTP Confirmation',
-                            //                          html:  "Hello,<br> Your Otp is.<br> "
+          
+                
+                var email = req.body.email;
+                console.log("email",email);
+                var otp = req.body.otp;
+                console.log("otp",otp);
             
-                            //                     };
-                            //                     transporter.sendMail(mailOptions, (error, info) => {
-                            //                         console.log("mail",mailOptions)
-                            //                         if (error){
-                            //                             console.log("error",error);
-                            //                         }        
-                            //                     });
-                           
-                            sendmail({
-                                
-                                from: 'harinishree.muniraj@rapidqube.com',
-                                to: email,
-                                subject: 'test sendmail',
-                                html: 'Mail of test sendmail ',
-                              }, function(err, reply) {
-                                console.log(err && err.stack);
-                                console.dir(reply);
-                            });
-                            console.log("Entering in to the send mailer function");
-                                                res
-                                            .status(result.status)
-                                            .json({
-                                                message: result.message,
-                                                
-                                            });
-    
-                                    })
-                                    .catch(err => res.status(err.status).json({
-                                        message: err.message
-                                    }));          
-                                            
-                            
-        });
         
-    
+                if (!email || !otp) {
+        
+                    res
+                        .status(400)
+                        .json({
+                            message: 'Invalid Request !'
+                        });
+        
+                } else {
+                    var transporter = nodemailer.createTransport("SMTP", {
+                        host: 'smtp.office365.com',
+                        port: 25,
+                        secure: true,
+                        auth: {
+                            user: "harinishree.muniraj@rapidqube.com",
+                            pass: "Harini!96"
+                        }
+                    });
+        
+                    var mailOptions = {
+                        transport: transporter,
+                        from: '"AIDANT"<harinishree.muniraj@rapidqube.com',
+                        to: email,
+                        subject: 'OTP Confirmation',
+        
+                        html: "Hello,<br> Your Otp is.<br> " + otp
+                    };
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {}
+                    });
+                   
+                   mail
+                        .mail(email, otp)
+                        .then(result => {
+                            res
+                                .status(result.status)
+                                .json({
+                                    message: result.message
+                                });
+                        })
+                        .catch(err => res.status(err.status).json({
+                            message: err.message
+                        }));
+                }
+            });
+        
 
 
 router.post('/login', cors(), (req, res) => {
@@ -291,31 +279,65 @@ router.post('/login', cors(), (req, res) => {
 });
 
 
-
-// router.post('/fetchkey', cors(), (req, res) => {
-
-//     console.log(req.body);
-//     var url = req.body.url;
-//     console.log("url",url);
+router.post('/outbox', cors(), (req, res) => {
+    console.log("entering outbox  functions ");
+    const url = req.body.url;
+    console.log(url);
+    const usertype = req.body.usertype;
+    console.log(usertype);
+    const publickey = req.body.publickey;
+    console.log(publickey);
+    const status = req.body.status;
+    console.log(status);
    
-//     var usertype = req.body.usertype;
-//     console.log(req.body.usertype);
-//     fetchkey
-//         .fetchkey(url,usertype)
-//         .then(function(result) {
-//             console.log(result)
+    outbox
+        .outboxUser(url,usertype,publickey,status)
+        .then(result => {  
+            console.log("resultharini",result); 
+           
+            res.send({
+                "message": " Stored Successful",
+                status: result.status,
 
-//             res.send({
-//                 status: result.status,
-//                 message: result.usr
-//             });
-//         })
-//         .catch(err => res.status(err.status).json({
-//             message: err.message
-//         }));
+            });
+        })
+        .catch(err => res.status(err.status).json({
+            message: err.message
+        }).json({
+            status: err.status
+        }));
+
+});
 
 
-// }); 
+
+
+router.post('/fetchkey', cors(), (req, res) => {
+
+    console.log(req.body);
+    var publickey = req.body.publickey;
+    console.log("publickey",publickey);
+   
+    var status = req.body.status;
+    console.log("status",status);
+   
+   
+    fetchkey
+        .fetchkey(publickey,status)
+        .then(function(result) {
+            console.log(result)
+
+            res.send({
+                status: result.status,
+                message: result.usr
+            });
+        })
+        .catch(err => res.status(err.status).json({
+            message: err.message
+        }));
+
+
+}); 
 
 
 router.get("/email/verify", cors(), (req, res, next) => {
@@ -530,8 +552,8 @@ router.post("/user/phoneverification", cors(), (req, res) => {
 //        })
         
 //      }); 
-    //  console.log('running a task every two minutes');
-    // });
+     console.log('running a task every two minutes');
+
     router.post('/getAck', cors(), (req,res) => {
        var Key = req.body.Key;
        console.log(Key);
@@ -565,7 +587,113 @@ router.post("/user/phoneverification", cors(), (req, res) => {
                            
                         }));
                 }
-             });
+             }); 
+
+
+             router.post('/filereader', cors(), (req,res) => {
+                console.log("UI",req.body);
+                const URL = req.body.url;
+                console.log(URL);
+                var usertype = req.body.usertype;
+                console.log(usertype);
+                const Key = req.body.recKey;
+                 console.log(Key);
+                const sndKey = req.body.sndKey;
+                console.log(sndKey);
+               const password = req.body.recKey;
+    console.log(password);
+                // const pubKey =req.body.pubKey;
+                // console.log(pubKey)
+            
+                    // perform operation e.g. GET request http.get() etc.
+                    var cron = require('node-cron');
+                    
+                    //  cron.schedule('*/2 * * * *', function(){
+                   
+      //do some work
+    
+    
+                      
+                    fs.readdir(req.body.url, (err, files) => {
+                   
+                      files.forEach(file => {
+                          if(file)
+                        console.log("data",file);
+                        var file = file;
+                        // fs.readFile(URL+"/"+file,function(err,data){
+                    
+                        //     var data = data;
+                                    // console.log("received data:" + data);
+                                 console.log(URL+"/"+file )
+                                   console.log("manoj")
+                                    nodecipher.encryptSync({
+                                     input:URL+"/"+file ,
+                                     output: file,
+                                     password: password
+                                    
+                                    },function (err, opts) {
+                                     if (err) throw err;
+                                    
+                                     console.log('It worked!');
+                                   
+                                    })
+                                    // console.log(output)
+                                    fs.readFile(file,function(err,data){
+                                        var file1= data;
+                                        console.log(file1)
+                            ipfs.files.add(data, (err, result) => { // Upload buffer to IPFS
+                                if(err) {
+                                  console.error(err)
+                                  return
+                                }
+                                let url = `${result[0].hash}`
+                                //https://ipfs.io/ipfs/
+                                console.log("url",url)
+                           
+                            
+                                  
+                       
+           
+                        
+                    console.log(file)
+                    if (!URL ||!sndKey || !url ||!usertype ||!Key ) {
+                    res
+                        .status(400)
+                        .json({
+                            message: 'Invalid Request !'
+                        });
+                    }
+                        else {
+            
+                            filereader
+                                .filereader(URL,sndKey,url,usertype,Key)
+                                .then(result => {
+                    
+                                    res.send({
+                                        "message": "Transaction Complete",
+                                        "status": true,
+                    
+                                     
+                    
+                                    });
+                    
+                    
+                                })
+                                .catch(err => res.status(err.status).json({
+                                    message: err.message
+                                }).json({
+                                    status: err.status
+                                   
+                                }));
+                        }
+                    })
+                });
+            
+                     });
+                    
+                    })
+                })
+                
     
     
     router.post('/getStatus', cors(), (req,res) => {
@@ -603,53 +731,53 @@ router.post("/user/phoneverification", cors(), (req, res) => {
                         }));
                 }
              });
-             router.post('/filereader', cors(), (req,res) => {
+    //          router.post('/filereader', cors(), (req,res) => {
                
-        const URL = req.body.url;
-        console.log(URL);
-        var usertype = req.body.usertype;
-        console.log(usertype);
-        const Key = req.body.Key;
-        console.log(Key);
-        var demo = 
-        {
-            URL: URL,
-            usertype: usertype,
-            Key: Key
-        }
+    //     const URL = req.body.url;
+    //     console.log(URL);
+    //     var usertype = req.body.usertype;
+    //     console.log(usertype);
+    //     const Key = req.body.Key;
+    //     console.log(Key);
+    //     var demo = 
+    //     {
+    //         URL: URL,
+    //         usertype: usertype,
+    //         Key: Key
+    //     }
             
 
 
-        //  obj.jsonFileData.push({id: 1, square:2});
+    //     //  obj.jsonFileData.push({id: 1, square:2});
 
-        //  var json = JSON.stringify(obj);
+    //     //  var json = JSON.stringify(obj);
 
-         var fs = require('fs');
-        //  fs.writeFile('myjsonfile.json', json, (err) => {  
-        //     if (err) throw err;
-        //     console.log('Data written to file');
-        // });
+    //      var fs = require('fs');
+    //     //  fs.writeFile('myjsonfile.json', json, (err) => {  
+    //     //     if (err) throw err;
+    //     //     console.log('Data written to file');
+    //     // });
         
-         fs.readFile('config.json', 'utf8', function readFileCallback(err, data){
-            if (err){
-                console.log(err);
-            } else {
-                console.log("data123",data);
-                var obj;
-                var json;
-            obj = JSON.parse(data); //now it an object
-            obj.jsonFileData.push(demo); //add some data
-            json = JSON.stringify(obj); //convert it back to json
-            fs.writeFile('config.json', json, 'utf8',  (err) => {  
-                    if (err) throw err;
-                    console.log('Data written to file');
-                    res.status(200).json({
-                        message:"upload done"
-                    });
-                }); // write it back 
-        }});
+    //      fs.readFile('config.json', 'utf8', function readFileCallback(err, data){
+    //         if (err){
+    //             console.log(err);
+    //         } else {
+    //             console.log("data123",data);
+    //             var obj;
+    //             var json;
+    //         obj = JSON.parse(data); //now it an object
+    //         obj.jsonFileData.push(demo); //add some data
+    //         json = JSON.stringify(obj); //convert it back to json
+    //         fs.writeFile('config.json', json, 'utf8',  (err) => {  
+    //                 if (err) throw err;
+    //                 console.log('Data written to file');
+    //                 res.status(200).json({
+    //                     message:"upload done"
+    //                 });
+    //             }); // write it back 
+    //     }});
 
-    })
+    // })
     }
     var config = require('config');
     var dbConfig = config.get('pro');

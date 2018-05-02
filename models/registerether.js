@@ -19,7 +19,7 @@ const registerpageSchema = mongoose.Schema({
     retypepassword: String,
     usertype:  String,
     encodedMail: String,
-    status: Array,
+    status: String,
     count: Number,
     publickey: String,
     privatekey: String,

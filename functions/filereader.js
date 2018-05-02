@@ -4,14 +4,22 @@ const web3Obj = new web3(web3SocketProvider);
 var contract = require("../node_modules/truffle-contract");
 const smartcurrency_artifacts = require('../build/contracts/SmartCurrency.json')
 var SmartCurrency = contract(smartcurrency_artifacts);
+
+
+
+
 // change provider
+
 var accounts;
 // var account;
 var account;
+
+
 //  window.App = {
    
     // start: function() {
      
+
         // Bootstrap the MetaCoin abstraction for Use.
         //MetaCoin.setProvider(web3.currentProvider);
         // SmartCurrency.setProvider(web3.currentProvider);
@@ -23,6 +31,7 @@ var account;
         //         alert("There was an error fetching your accounts.");
         //         return;
         //     }
+
         //     if (accs.length == 0) {
         //         alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
         //         return;
@@ -32,21 +41,23 @@ var account;
         //     account=accounts[0];
         //     console.log(account);
         //     // web3.eth.defaultAccount = web3.eth.accounts[0]
+
            
            
         
         //     // self.accountStatus();
         // });
-    
+
    
- module.exports.filereader = (URL,Key,file,usertype) => new Promise((resolve, reject) => {   
- 
+
+ module.exports.filereader = (URL,sndKey,url,usertype,Key) => new Promise((resolve, reject) => {   
+   
     var globalVariable={
-        files: [URL,Key,file]
+        files: [URL,sndKey,url,usertype,Key]
      };
   
         console.log("entering into the web3.js fnc");
-        console.log("files.......,",file)
+        console.log("files.......,",url)
         
     SmartCurrency.setProvider(web3SocketProvider);
         // SmartCurrencyE.setProvider(web3.currentProvider);
@@ -60,6 +71,7 @@ var account;
                 alert("There was an error fetching your accounts.");
                 return;
             }
+
             if (accs.length == 0) {
                 alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
                 return;
@@ -69,56 +81,65 @@ var account;
             account=accounts[0];
             console.log(account);
             // web3.eth.defaultAccount = web3.eth.accounts[0]
+
            
            
         
             // self.accountStatus();
         });
+
     
         var rapid;
         console.log("manoj")
         SmartCurrency.deployed().then(function(instance) {
-            console.log("entering into solidity")
+            console.log("entering into solidity",Key)
+            console.log("entering into solidity",sndKey)
+            console.log("entering into solidity",url)
+            // console.log("entering into solidity",pubKey)
             rapid = instance;
-            return rapid.StoreDocument(Key.toString(),file.toString(),{
+        //   var url = "QmQyr151jHbMyZSbrsfPoAG5SeYcW5RvvMTzNvvCg5C5Ef"
+          
+            return rapid.StoreDocument(sndKey.toString(), url,Key.toString(),{
                 from: account
                 
             });
            
        }) .then(() => resolve({
            status: 201,
-          message: 'Transaction complete!'
+          message: "Transaction Complete"
        
-     }))
+    //  })).catch(err => {
+
+    //         reject({
+    //             status: 401,
+    //             message: 'Invalid Credentials !'
+    //         });
+        
+    })).then(() => resolve({
+        status: 201,
+        message: 'loan  approved Sucessfully !'
+    }))
+
     .catch(err => {
+
         if (err.code == 11000) {
+
             reject({
                 status: 409,
-                message: 'Error Approving transaction due to insufficient Balance'
+                message: ' loan closed !'
             });
+
         } else {
+            console.log("error occurred" + err);
+
             reject({
                 status: 500,
                 message: 'Internal Server Error !'
             });
         }
-    })
-});
-      
-    function window(){
-            // window.addEventListener('load', function() {
-                // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-                if (typeof web3 !== 'undefined') {
-                    web3 = new web3(web3.currentProvider);
-                  } else {
-                    // set the provider you want from Web3.providers
-                    web3 = new web3(new web3.providers.HttpProvider("http://localhost:8545"));
-                  
-                    
-            
-                }
-               
-            // })
-        }
-             
-    
+    });
+
+ })
+
+
+

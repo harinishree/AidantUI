@@ -12,6 +12,7 @@ exports.mail = (email,otp) => {
 
         .then(users => {
             console.log("Entering in to teh then function");
+            console.log("users",users);
                 resolve({
                     status: 200,
                     message : "Email sent successfully"

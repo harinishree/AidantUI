@@ -28,27 +28,46 @@
 
        function getkey() {
      
-       
-         var Key = ""
-         console.log("lol----" +url)
+        var publickey = document.getElementById("publickey").value;
+      console.log("lol----" +publickey)
+      var status = "read"
+      console.log("status123...",status);
+
         
          var fetch = {
    
-       "Key":Key
+      "publickey":publickey,
+       "status":status
      }
        
      $.ajax({
-     url: 'http://localhost:8082/getStatus' ,
+     url: 'http://localhost:8082/fetchkey' ,
       type: 'POST',
       contentType: 'application/json',
         data: JSON.stringify(fetch),
         success: function(response) {
-        console.log((response));
-       //  var publickey = response.users.publicKey;
-       //       console.log("publickey",publickey);
-       //    var privatekey = response.PrivateKey;
-       //       console.log("privatekey",privatekey);
+        console.log(("harini123",response));
+        console.log("responses",response.message.status);
+        var message = response.message.status;
+        console.log("hari123",message);
+        var url  = response.message.url;
+        console.log("hari123",url);
+        var usertype = response.message.usertype;
+        console.log("hari123",usertype);
+        
+        if(message=="read")
+
+    {
+        
+        var row = "<tr><td>"+url+"</td><td>"+usertype+"</td><td>"+message+"</td></tr>";
+            $('#myTable tr:last').after(row);
+            // window.location = "outbox.html";
     
+         
+    }
+      else {
+        console.log(error)
+      }
       }, 
                      
            });     
@@ -96,30 +115,22 @@
      <br>
                         
      <form>
-            <label for="Name">URL:</label>
-            <input type="text" style="width:150px" text-align: "left"; name="UserName"id="url"> <br> <br>
-            <!-- <div class="wrapper">
-                <button type="button" onclick="fetchkey()">Test</button> <br> <br>
-             <br> -->
-            <label for="password">CompanyID:</label>
-            <input type="text" style="width:150px" text-align: "left" name="password"id="usertype"> <br> <br>
-           
+            
+          
             <label>  publickey:</label>
-            <input type="text" style="width:150px" text-align: "left" name="password"id="Key"> <br> <br>
+            <input type="text" style="width:150px" text-align: "left" name="password"id="publickey"> <br> <br>
    <div class="wrapper">
-     <button type="button" onclick="fetchkey()">Submit</button> <br> <br>
+     <button type="button" onclick="getkey()">Submit</button> <br> <br>
   <br>
           </form> <br>
                         <table id="myTable">
                                 <th>File Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
+                                <th> CompanyID</th>
                                 <th>Delivery Status</th>
                                 <tr>
                                     <td>/home/rpqb-desk-004/Downloads</td>
-                                    <td>05.04.2018</td>
-                                    <td>5:00 am</td>
-                                    <td>Delivered</td>
+                                    <td>Account1</td>
+                                    <td>Read</td>
                                     
                                 </tr>
                             </table>

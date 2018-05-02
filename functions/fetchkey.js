@@ -1,22 +1,22 @@
-const user = require('../models/registerether'); 
+const user = require('../models/properties'); 
 
-exports.fetchkey = (url,usertype) => {
+exports.fetchkey = (publickey,status) => {
 
     return new Promise((resolve, reject) => {
         console.log("Entering in to the function")
+        
+        user.findOneAndUpdate({
+            publickey:publickey
+        }, {
+            $set: {
+
+               status:status
 
 
-        const newUser = new user({   
-            
-            url:url
-        });
-        newUser
-        .save()
-        console.log("newuser finished");
-        user.find({
-           "usertype":usertype
+            }
+        }, {
+            new: true
         })
-            
             .then(users => {
                 console.log("users", users)
                

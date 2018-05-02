@@ -23,7 +23,7 @@
     <!-- <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script> -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  -->
 </head>
-
+<!-- 
 <script type='text/javascript'>
 
        function getkey() {
@@ -54,7 +54,7 @@
            });     
        }
      
-       </script>
+       </script> -->
 
 <nav class="navbar navbar-inverse">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -74,6 +74,8 @@
                     <li><a href="properties.html">Properties</a></li>
                     <li><a href="inbox.html">Inbox</a></li>
                     <li><a href="outbox.html">Outbox</a></li>
+                    <li><a href="deliverystatus.html">Delivery Status</a></li>
+                    
                 </ul>
             </li>
           </ul>
@@ -84,36 +86,84 @@
 </nav>
 <body>
   <body  background="image/Webpage-Background.png">
-    <script type='text/javascript'>
+    <script type='text/javascript'>  
 
-        function getkey() {
+
+    //     function getkey() {
       
         
-          var Key = "0x1718b72e3e38c93ff114d5462b951d298681d635"
-          console.log("lol----" +Key)
+    //       var Key = "0x1718b72e3e38c93ff114d5462b951d298681d635"
+    //       console.log("lol----" +Key)
          
-          var fetch = {
+    //       var fetch = {
     
-        "Key":Key
+    //     "Key":Key
+    //   }
+        
+    //   $.ajax({
+    //   url: 'http://localhost:8082/getStatus' ,
+    //    type: 'POST',
+    //    contentType: 'application/json',
+    //      data: JSON.stringify(fetch),
+    //      success: function(response) {
+    //      console.log("manoj",response);
+    //     var result = response.message[0];
+    //    console.log("publickey",result);
+    //    var row = "<tr><td>"+result+"</td>";
+    //          $('#myTable tr:last').after(row);
+    //     //    var privatekey = response.PrivateKey;
+    //     //       console.log("privatekey",privatekey);
+     
+    //    }, 
+                      
+    //         });     
+    //     }
+      
+         function outbox() {
+      
+            var url = document.getElementById("url").value;
+      console.log("lol----" +url)
+      var usertype = document.getElementById("usertype").value;
+      console.log("lol----" +usertype)
+
+     var publickey = document.getElementById("publickey").value;
+      console.log("lol----" +publickey)
+      var status = "sent"
+      console.log("status123...",status);
+
+          var fetch = {
+              "url":url,
+              "usertype":usertype,
+              "publickey":publickey,
+              "status": status
+
       }
         
       $.ajax({
-      url: 'http://localhost:8082/getStatus' ,
+      url: 'http://localhost:8082/outbox' ,
        type: 'POST',
        contentType: 'application/json',
          data: JSON.stringify(fetch),
-         success: function(response) {
-         console.log("manoj",response);
-        var result = response.message[0];
-       console.log("publickey",result);
-       var row = "<tr><td>"+result+"</td>";
-             $('#myTable tr:last').after(row);
-        //    var privatekey = response.PrivateKey;
-        //       console.log("privatekey",privatekey);
+         success: function(message) {
+         console.log("manoj123",message);
+         if(status=="sent")
+
+{
+    
+    var row = "<tr><td>"+url+"</td><td>"+usertype+"</td><td>"+status+"</td></tr>";
+        $('#myTable tr:last').after(row);
+
      
+}
+  else {
+    console.log("error")
+  }
+
        }, 
-                      
-            });     
+      
+      }); 
+     
+             alert("Transaction Complete");  
         }
       
         </script>
@@ -128,33 +178,42 @@
      <br>
         
             <form>
-                    <!-- <label for="Name">URL:</label>
+                     <label for="Name">URL:</label>
                     <input type="text" style="width:150px" text-align: "left"; name="UserName"id="url"> <br> <br>
                     <!-- <div class="wrapper">
                         <button type="button" onclick="fetchkey()">Test</button> <br> <br>
-                     <br> -->
-                    <!-- <label for="password">CompanyID:</label>
-                    <input type="text" style="width:150px" text-align: "left" name="password"id="usertype"> <br> <br>
+                     <br>  -->
+                      <label>CompanyID:</label> 
+                     <select id="usertype">
+                             <option >Select Value</option>
+                         <option id="usertype">Honda</option>
+                         <option id="usertype">Account 1</option>
+                         <option id="usertype">Account 2</option>
+                         <option id="usertype">Account 3</option>
+                         <option id="usertype">Account 4</option>
+                         <option id="usertype">Account 5</option>
+                         </select> <br> <br>
                    
                     <label>  publickey:</label>
-                    <input type="text" style="width:150px" text-align: "left" name="password"id="Key"> <br> <br> --> 
-           <div class="wrapper">
+                    <input type="text" style="width:150px" text-align: "left" name="password"id="publickey"> <br> <br>                     
+            <div class="wrapper">
+             <button type="button" onclick="outbox()">Submit</button> <br> <br>
+          <br>  
+            <!-- <div class="wrapper">
              <button type="button" onclick="getkey()">Submit</button> <br> <br>
-          <br>
-                  </form> <br>
+          <br>  -->
+                   </form> <br> 
           
                         
 
                         <table id="myTable">
                                 <th>File Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
+                                <th>CompanyID</th>
                                 <th>Delivery Status</th>
                                 <tr>
                                     <td>/home/rpqb-desk-004/Downloads</td>
-                                    <td>05.04.2018</td>
-                                    <td>5:00 am</td>
-                                    <td>Delivered</td>
+                                    <td>Honda</td>
+                                    <td>sent</td>
                                     
                                 </tr>
                             </table>
