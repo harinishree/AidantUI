@@ -46,7 +46,6 @@
         console.log("Coinreciever:------>" + usertype);
      
         var register = {
-
         "companyname":companyname,
         "publickey" : publickey,
         // "privatekey": privatekey,
@@ -82,21 +81,22 @@
     
 <body>
    
-        <body  background="image/Webpage-Background.png">
+
        <!-- <div class="image">
         <img src="image/HomeLogo.jpg"style="width:100%;"> <br><br>
        </div> -->
        <br>
        <br>
        <h2> <center>Registration </center> </h2>
-       <div class="row">
-        <div class="col-lg-12">
-            <div class="input-group">
-                    <div class = "group">
+       <div class = "jumbtron">
+        
+            <div class = "containerreg">
+              <div class="containerdemo">
+                    
                 <h3> <center> Organisation Details </center></h3>
-                <label>CompanyName:</label>&nbsp; 
-                <input type="text" style="width:150px" text-align: "left"; name="password"id="companyname"> 
-                <label>CompanyID:</label>&nbsp; 
+                <label>CompanyName:</label> 
+                <input  class="form-control" type="text"  id="companyname">  <br><br>
+                <label>CompanyID:</label>
                 <select id="usertype">
                         <option >Select Value</option>
                     <option id="usertype">Honda</option>
@@ -108,29 +108,24 @@
                     </select> <br> <br>
                     
                  <label>Publickey:</label>&nbsp; 
-                <input type="text" style="width:150px" text-align: "left"; name="password"id="publickey">
+                <input  class="form-control" type="text"id="publickey">
                 <!-- <label>privatekey:</label>&nbsp; 
-                <input type="text" style="width:150px" text-align: "left"; name="password"id="privatekey"> <br> <br>  -->
-               
-                </div>
-                </div>
+        <input type="text" style="width:150px" text-align: "left"; name="password"id="privatekey"> <br> <br>  -->
 
-                <div class="input-group">
-                    <div class = "group">
                 <h3><center>Contact Information</center></h3>
                 <label>FirstName:</label> 
                 <!-- <input type="text" value=""  />&nbsp;  -->
-                <input type="text" style="width:150px" text-align: "left"; id="fname">
+                <input class="form-control" type="text"id="fname">
                 <label>LastName:</label>
-                <input type="text" style="width:150px" text-align: "left"; id="lname"> <br><br>
+                <input class="form-control" type="text"  id="lname"> <br><br>
                 <label>Email:</label>&nbsp;
-                <input type="text" style="width:150px" text-align: "left"; name="UserName"id="email"> 
+                <input  class="form-control"type="text"  id="email"> 
                 <label>Mobile Number:</label>&nbsp;
-                <input type="text" style="width:150px" text-align: "left"; name="UserName"id="phonenumber"> <br> <br>
+                <input class="form-control" type="text" id="phonenumber"> <br> <br>
                 <label>password:</label>&nbsp;
-                <input type="password" style="width:150px" text-align: "left"; name="password"id="pass"> 
+                <input  class="form-control" type="password"  name="password"id="pass"> 
                 <label>confirm password:</label>&nbsp;
-                <input type="password" style="width:150px" text-align: "left"; name="password"id="repass"> <br> <br>
+                <input class="form-control"  type="password"  name="password"id="repass"> <br> <br>
                 </div> <br>
             </div>
             </div>
@@ -140,9 +135,7 @@
         <br> <br>
         <br>
                <form>
-
                    
-
                        <label>FirstName:</label>
                        <input type="text" style="width:150px" text-align: "left"; name="UserName"id="fname"> <br> <br>
                        <label>LastName:</label>
@@ -167,8 +160,8 @@
         <!-- <a href="dashboard1.html"><button>Submit</button></a> 
        <button class="button" id="send" onclick="App.myFunction()">Submit</button>
                                        <br> -->
-                          <button type="button" onclick="handler('usertype')">Submit</button>
-    </div>
+                          <button type="button" onclick="handler">Submit</button>
+                         
    </div>
    </body>
 

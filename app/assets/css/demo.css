@@ -106,16 +106,16 @@ textarea {
 }
 .container {
    
-    /* background-color: skyblue;  
-   padding: 30px;
-   height: 150px;
-   border: 1px solid black; */
-   width: 960px;
-   background: skyblue;
-   height:250px;
-   margin: 0 auto;
-   border-width:1px;
-   border-color:black;
+    position: relative;
+    text-align: center;
+    width: 700px;
+    padding:5px;
+    margin: 0 auto; 
+    height:400px;
+    color:black;
+    background:gray;
+    border-width:1px;
+    border-color:black;
 }  
 .wrapper {
    margin: 0 auto;
@@ -139,13 +139,17 @@ input[type=file] {
    padding: 71px 0 65px 0;
    position: relative;
 }
-.container {
+.containerprop {
    position: relative;
    text-align: center;
-   width: 960px;
+   width: 700px;
+   padding:5px;
    margin: 0 auto; 
-   height:1100px;
+   height:450px;
    color:black;
+   background:gray;
+   border-width:1px;
+   border-color:black;
 }
 .btn-primary {
     border-color: azure;
@@ -215,12 +219,7 @@ input[type=file] {
 }
 .containerdemo {
    
-    /* background-color: skyblue;  
-   padding: 30px;
-   height: 150px;
-   border: 1px solid black; */
    width: 500px;
-   
    height:400px;
    margin: 0 auto;
    border-width:1px;
@@ -244,14 +243,16 @@ input[type=file] {
      font-weight: 700;
  }
  .containerreg {
-    width: 500px;
-    background: skyblue;
-    height:450px;
-    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    width: 800px;
+    padding:5px;
+    margin: 0 auto; 
+    height:850px;
+    color:black;
+    background:gray;
     border-width:1px;
     border-color:black;
-    text-align:left;
-
  }
  .input-group {
     position: relative;
@@ -261,4 +262,71 @@ input[type=file] {
     margin-left: 214px;
     background-color: darkgray;
 }
+/*bootstrap*/
 
+body{
+    background-color: white;
+}
+.centered-form{
+	margin-top: 100px;
+}
+
+.centered-form .panel{
+	background: aqua;
+	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
+.panel-title{
+    font-size:23;
+    text-align:center;
+    justify-content: center;
+}
+.rightcontact {
+    width:49.5%;
+    float:right;
+    box-sizing: border-box;
+    padding: 0px 0px 0px 15px;
+  } 
+  .jumbotron {
+  
+    margin-bottom: 30px;
+    color: inherit;
+    height: 400px;
+    margin-left: 22px;
+    width: 1250px;
+    background-color:white;
+} 
+
+
+
+.header .text {
+    font: x-large sans-serif;
+    text-align: center;
+}
+
+ 
+.header .text {
+    display: inline-block;
+    vertical-align: bottom;
+    text-align: center;
+}
+button {
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}  
+.containerin {
+    position: relative;
+    text-align: center;
+    width: 600px;
+    padding:5px;
+    margin: 0 auto; 
+    height:300px;
+    color:black;
+    background:gray;
+    border-width:1px;
+    border-color:black;
+ }

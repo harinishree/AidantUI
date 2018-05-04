@@ -1,109 +1,154 @@
-
-
 <!doctype html>
 <html lang="en">
 
 <head>
-    <!--<meta charset="utf-8" />-->
+    <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="assets/img/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <script src="../app.js"></script>
+    <title>SmartCurrency</title>
+
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
+
     <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Animation library for notifications   -->
-    <link href="assets/css/animate.min.css" rel="stylesheet" />
+
+
+
     <!--  Light Bootstrap Table core CSS    -->
     <link href="assets/css/light-bootstrap-dashboard.css" rel="stylesheet" />
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="assets/css/demo.css" rel="stylesheet" />
-    <!--     Fonts and icons     -->
-    <script src="https://unpkg.com/ag-grid@14.2.0/dist/ag-grid.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-    <!-- <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script> -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  -->
-</head>
-<body>
-<form id="test" action="#" method="post">
-    <div class="form-group">
-        <label for="path">path</label>
-        <input class="form-control" type="text" name="path" id="path" />
-   
-  
-    
-    	<label for="select">company Name</label>
-    	<select name="select" class="form-control">
-            <option value="none" selected="selected">None</option>
-            <option value="Honda">Honda </option>
-    		<option value="Account1">Account1 </option>
-    		<option value="Account2">Account2</option>
-    		<option value="Account3">Account 3</option>
-    	</select>
 
-        <label for="PublicKey">Public Key</label>
-        <input class="form-control" type="text" name="PublicKey" id="PublicKey" />
-    
-   </div>
-    <p>
-        <input type="submit" value="Send" class="btn btn-primary btn-block" />
-    </p>
-</form>	
-<pre id="output"></pre>
+    <!--     Fonts and icons     -->
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="sidebar" data-color="blue" data-image="assets/img/sidebar-5.jpg">
+
+            <!--
+        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+        Tip 2: you can also add an image using data-image tag
+    -->
+
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <a href="login.html" class="simple-text">
+                                                            Rapid Rise
+
+                </a>
+                </div>
+
+                <ul class="nav">
+                    <li class="active">
+                        <a href="login.html">
+                            <i class="pe-7s-graph"></i>
+                            <p>Login</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-default navbar-fixed">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="login.html">Login</a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="wrapper">
+                            <div class="container">
+                                <!--<form action="dashboard.html" autocomplete="on">-->
+                                <!--<a href="Employee.html" class="to_register"></a>-->
+                                <form id="display">
+
+                                    <br>
+                                    <label for="emaillogin" class="youmail"> Email </label>
+                                    <input class="youmail" id="emaillogin" name="emaillogin" required="required" type="email" placeholder="email" />
+                                    <br>
+                                    <br>
+                                    <label for="passwordlogin" class="youpasswd"> Password </label>
+                                    <input class="youpasswd" id="passwordlogin" name="passwordlogin" required="required" type="password" placeholder="password" />
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-primary" id="submit" name="submit" value="submit" onclick="App.AuthenticateUser()">Login</button>
+
+                                    <!--<button class="btn btn-primary" id="send" action="Employee.html" onclick="App.AuthenticateUser()">Login</button>-->
+
+                                    <br>
+                                    <br> Not a member ?
+                                    <a href="template.html" class="to_register"> Go and Register </a>
+                                    <span id="RegisterUser"></span>
+                                    <br>
+                                    <span id="status"></span>
+                                    <br>
+                                </form>
+                            </div class="container">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+
+                    <p class="copyright pull-right">
+                        &copy;
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>
+                    </p>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
 </body>
 
+<!--   Core JS Files   -->
+<script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
+<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 
-<script>
-    (function() {
-	function toJSONString( form ) {
-        console.log("form",form)
-		var obj = {};
-		var elements = form.querySelectorAll( "input, select, textarea" );
-		for( var i = 0; i < elements.length; ++i ) {
-			var element = elements[i];
-            console.log("harinielement", element)
-			var name = element.name;
-            console.log("harininame",name)
-			var value = element.value;
-            console.log("harinivalue",value)
-			if( name ) {
-				obj[ name ] = value;
-                console.log("obj",obj)
-			}
-		}
+<!--  Checkbox, Radio & Switch Plugins -->
+<script src="assets/js/bootstrap-checkbox-radio-switch.js"></script>
 
-		return JSON.stringify( obj );
-	}
+<!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+<script src="assets/js/light-bootstrap-dashboard.js"></script>
 
-	document.addEventListener( "DOMContentLoaded", function() {
-		var form = document.getElementById( "test" );
-        console.log("form123..>>",form)
-		var output = document.getElementById( "output" );
-		form.addEventListener( "submit", function( e ) {
-			e.preventDefault();
-			var json = toJSONString( this );
-            console.log("json",json);
-            output.innerHTML = json;
-            console.log("output",output.innerHTML)
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+<script src="assets/js/demo.js"></script>
 
-		}, false);
-
-	});
-
-})();
-</script>
-<style>
-    body {
-        margin: 2em auto;
-        max-width: 600px;
-      }
-      
-      form div {
-          margin-bottom: 0.5em;
-      }
-      form div label, form div input {
-          display: block;
-          margin-bottom: 0.3em;
-      }
-    </style>
+</html>

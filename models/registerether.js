@@ -35,7 +35,7 @@ mongoose.Promise = global.Promise;
 
 
     mongoose.connect('mongodb://harini:Harini!96@ds119406.mlab.com:19406/mortgage', {
-    useMongoClient: true
+    // useMongoClient: true
 });
 
 

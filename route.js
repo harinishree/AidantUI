@@ -31,6 +31,8 @@ var ipfs = ipfsAPI('localhost', 5001)
 var crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
     password = 'd6F3Efeq';
+    
+  
 
  module.exports = router => {
     router.post('/demo', cors(), (req, res) => { 
@@ -84,27 +86,30 @@ var crypto = require('crypto'),
                         console.log("results harini", result);
                         // var link = "https://" + remoteHost + "/email/verify?mail=" + encodedMail + "&email=" + email;
                         console.log("encoded mail",encodedMail)
-                        var transporter = nodemailer.createTransport("SMTP", {
-                            host: 'smtp.office365.com',
-                            port: 25,
-                            secure: true,
-                            auth: {
-                                user: "harinishree.muniraj@rapidqube.com",
-                                pass: "Harini!96"
-                            }
-                        });
-            
-                        var mailOptions = {
-                            transport: transporter,
-                            from: '"AIDANT"<harinishree.muniraj@rapidqube.com',
-                            to: email,
-                            subject: 'OTP Confirmation',
-            
-                            html: "Hello,<br> Your Otp is.<br> " + otp
-                        };
-                        transporter.sendMail(mailOptions, (error, info) => {
-                            if (error) {}
-                        });
+                       
+                    var transporter = nodemailer.createTransport("SMTP", {
+                        host: 'smtp.office365.com',
+                        port: 25,
+                        secure: true,
+                        auth: {
+                            user: "manoj.venkateswararaja@rapidqube.com",
+                            pass: "Rpqb$2018"
+                        }
+                    });
+                    var mailOptions = {
+                        transport: transporter,
+                        from: '"Aidant Service"<manoj.venkateswararaja@rapidqube.com>',
+                        to: email,
+                        subject: 'OTP Confirmation',
+        
+                        html: "Hello,<br> Your Otp is.<br> " + otp
+                    };
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            return console.log("error",error)
+                        }
+                    });
+                   
                                             sendOtp.send(phonenumber, "AIDANT", otp, function (error, data, response) {
                                                 console.log(data);
                                                // console.log("response",response)
@@ -208,20 +213,20 @@ var crypto = require('crypto'),
                             message: 'Invalid Request !'
                         });
         
-                } else {
+                } else { 
+
                     var transporter = nodemailer.createTransport("SMTP", {
                         host: 'smtp.office365.com',
                         port: 25,
                         secure: true,
                         auth: {
-                            user: "harinishree.muniraj@rapidqube.com",
-                            pass: "Harini!96"
+                            user: "manoj.venkateswararaja@rapidqube.com",
+                            pass: "Rpqb$2018"
                         }
                     });
-        
                     var mailOptions = {
                         transport: transporter,
-                        from: '"AIDANT"<harinishree.muniraj@rapidqube.com',
+                        from: '"Aidant Service"<manoj.venkateswararaja@rapidqube.com>',
                         to: email,
                         subject: 'OTP Confirmation',
         

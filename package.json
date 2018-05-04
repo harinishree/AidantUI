@@ -61,6 +61,7 @@
     "pug": "^2.0.3",
     "sendmail": "^1.4.1",
     "sendotp": "^1.2.8",
+    "simplesmtp": "^0.3.35",
     "web3": "^0.18.4",
     "web3-provider-engine": "^13.3.3"
   }
